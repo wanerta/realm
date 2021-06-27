@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "REALM_APPLICATION.fullname" . }}
+  labels:
+    {{- include "REALM_APPLICATION.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+  - port: {{ .Values.service.port }}
+    name: grpc
+  selector:
+    {{- include "REALM_APPLICATION.rpcSelectorLabels" . | nindent 4 }}

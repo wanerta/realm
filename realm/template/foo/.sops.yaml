@@ -1,0 +1,16 @@
+creation_rules:
+  # gcp files using GCP KMS
+  - path_regex: enc.alpha\..*\.yaml$
+    gcp_kms: projects/pxn-staging-env/locations/global/keyRings/charts/cryptoKeys/sops
+
+  - path_regex: enc.beta\..*\.yaml$
+    gcp_kms: projects/pxn-staging-env/locations/global/keyRings/charts/cryptoKeys/sops
+    
+  - path_regex: enc.main\..*\.yaml$
+    gcp_kms: projects/pxn-project-sre/locations/global/keyRings/charts/cryptoKeys/sops
+
+  - path_regex: .kube/alpha$
+    gcp_kms: projects/pxn-staging-env/locations/global/keyRings/charts/cryptoKeys/sops
+  
+  - path_regex: .kube/beta$
+    gcp_kms: projects/pxn-staging-env/locations/global/keyRings/charts/cryptoKeys/sops

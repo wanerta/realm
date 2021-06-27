@@ -1,0 +1,23 @@
+steps:
+- id: decrypted
+  name: 'gcr.io/peatio-images-project/github.com/peatio/veda/tools/t-800:v1.1'
+  entrypoint: bash
+  args:
+  - -c
+  - |
+   make decrypt-alpha
+   sops -d .kube/alpha > .kube/config
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=asia-east1-a'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=pxn-beta'
+  - 'GCLOUD_PROJECT=pxn-staging-env'
+
+- name: 'gcr.io/peatio-images-project/github.com/peatio/veda/tools/t-800:v1.1'
+  entrypoint: "make"
+  args: ["upgrade-alpha"]
+  env:
+  - 'SKIP_CLUSTER_CONFIG=true'
+  - 'KUBECONFIG=.kube/config'
+  waitFor: ['decrypted']
+
+logsBucket: gs://cloud-build.logs.deq.peatio.com/scambio

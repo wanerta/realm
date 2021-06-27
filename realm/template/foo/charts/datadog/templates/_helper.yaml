@@ -1,0 +1,26 @@
+{{- define "datadog.env" }}
+{{- with .Values.dataDog  }}
+- name: DD_SERVICE
+  value: {{ required "Please set .Values.dataDog.service" .service | quote }}
+- name: DD_ENV
+  value: {{ .env | quote }}
+- name: DATADOG_ENABLED
+  value: {{ .enabled  | quote }}
+- name: DD_AGENT_HOST
+{{- if .agentHost  }}
+  value: {{ .agentHost | quote }}
+{{- else }}
+  valueFrom:
+    fieldRef:
+      fieldPath: status.hostIP
+{{- end }}
+- name: DD_PROFILING_ENABLED
+  value: {{ default "false" .profilingEnabled | quote  }}
+- name: DD_LOGS_INJECTION
+  value: {{ default "true" .logsInjection  | quote }}
+- name: DD_TRACE_SAMPLE_RATE
+  value: {{ default "1" .traceSampleRate | quote }}
+- name: DD_JMXFETCH_ENABLED
+  value: {{ default "true" .jmxFetchEnabled | quote }}
+{{- end }}
+{{- end }}

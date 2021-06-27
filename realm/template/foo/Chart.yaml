@@ -1,0 +1,14 @@
+apiVersion: v2
+name: REALM_RELEASE
+description: Helm Chart For Kubernetes
+type: application
+version: 0.1.0
+
+dependencies:
+- name: REALM_APPLICATION
+  version: "0.1.0"
+  condition: REALM_APPLICATION.enabled
+- name: ambassador
+  version: "0.1.0"
+  condition: ambassador.enabled
+

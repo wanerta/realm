@@ -1,0 +1,211 @@
+{{- define "REALM_APPLICATION.env-common" }}
+- name: REPLICA_DATABASE_PASSWORD
+  valueFrom:
+    secretKeyRef:
+      name: REALM_APPLICATION
+      key: replicaDatabasePassword
+- name: REPLICA_DATABASE_HOST
+  value: {{ required "Plz set .Values.replicadatabase.host" .Values.replicadatabase.host | quote }}
+- name: REPLICA_DATABASE_NAME
+  value: {{ required "Plz set .Values.replicadatabase.name" .Values.replicadatabase.name | quote }}
+- name: REPLICA_DATABASE_PORT
+  value: {{ required "Plz set .Values.replicadatabase.port" .Values.replicadatabase.port | default "3306" | quote }}
+- name: REPLICA_DATABASE_USER
+  value: {{ required "Plz set .Values.replicadatabase.user" .Values.replicadatabase.user | default "root" | quote }}
+- name: DATABASE_PASSWORD
+  valueFrom:
+    secretKeyRef:
+      name: REALM_APPLICATION
+      key: databasePassword
+- name: DATABASE_HOST
+  value: {{ required "Plz set .Values.database.host" .Values.database.host | quote }}
+- name: DATABASE_DB
+  value: {{ required "Plz set .Values.database.name" .Values.database.name | quote }}
+- name: DATABASE_PORT
+  value: {{ required "Plz set .Values.database.port" .Values.database.port | default "3306" | quote }}
+- name: DATABASE_USER
+  value: {{ required "Plz set .Values.database.user" .Values.database.user | default "root" | quote }}
+- name: ERROR_WHEN_N_ACCOUNT_VALUATION_ERROR
+  value: {{ required "Plz set .Values.errorWhenNAccountValuationError" .Values.errorWhenNAccountValuationError | default "3" | quote }}
+- name: MAX_ARE_ID_TO_AUTO_CHECK
+  value: {{ required "Plz set .Values.maxAreIDToAutoCheck" .Values.maxAreIDToAutoCheck | default "633" | quote }}
+- name: MIN_ACCOUNT_SNAPSHOT_ID_TO_CLEAR
+  value: {{ required "Plz set .Values.minAccountSnapshotIDToClear" .Values.minAccountSnapshotIDToClear | default "202203" | quote }}
+- name: MAX_ACCOUNT_SNAPSHOT_ID_TO_CLEAR
+  value: {{ required "Plz set .Values.maxAccountSnapshotIDToClear" .Values.maxAccountSnapshotIDToClear | default "202600" | quote }}
+- name: CRON_ADD_ONCE_JOB
+  value: {{ required "Plz set .Values.cronAddOnceJob" .Values.cronAddOnceJob | default "40 12 29 1 *" | quote }}
+- name: CRON_SYNC_MARKETS_DAILY
+  value: {{ required "Plz set .Values.cronSyncMarketsDaily" .Values.cronSyncMarketsDaily | default "0 11 * * *" | quote }}
+- name: CRON_CHECK_ACCOUNTING
+  value: {{ required "Plz set .Values.cronCheckAccounting" .Values.cronCheckAccounting | default "*/2 * * * *" | quote }}
+- name: CRON_CALCULATE_CUSTOMER_NET_ASSETS_AND_UPDATE
+  value: {{ required "Plz set .Values.cronCalculateCustomerNetAssetsAndUpdate" .Values.cronCalculateCustomerNetAssetsAndUpdate | default "*/30 * * * *" | quote }}
+- name: CRON_SYNC_ETF_NET_VALUES
+  value: {{ required "Plz set .Values.cronSyncEtfNetValues" .Values.cronSyncEtfNetValues | default "*/10 * * * *" | quote }}
+- name: BIGQUERY_CREDENTIAL_JSON
+  value: {{ required "Plz set .Values.bigqueryCredentialJson" .Values.bigqueryCredentialJson | default "/var/gcp/REALM_APPLICATION-bigquery-sa.json" | quote }}
+- name: DINGDING_TOKEN
+  value: {{ required "Plz set .Values.dingdingToken" .Values.dingdingToken | quote }} 
+- name: REALM_APPLICATION_ALERTING_DINGDING_TOKEN
+  value: {{ required "Plz set .Values.REALM_APPLICATIONAlertingDingDingToken" .Values.REALM_APPLICATIONAlertingDingDingToken | quote }}
+- name: DEPOSIT_ALERTING_DINGDING_TOKEN
+  value: {{ required "Plz set .Values.depositAlertingDingDingToken" .Values.depositAlertingDingDingToken | quote }} 
+- name: CONTRACT_DINGDING_TOKEN
+  value: {{ required "Plz set .Values.contractDingDingToken" .Values.contractDingDingToken | quote }}
+- name: CONTRACT_DINGDING_AT_MOBILES
+  value: {{ required "Plz set .Values.contractDingDingMobile" .Values.contractDingDingMobile | default " " | quote }}
+- name: ES_HOST
+  value: {{ required "Plz set .Values.esHost" .Values.esHost | quote }}
+- name: ES_PORT
+  value: {{ required "Plz set .Values.esPort" .Values.esPort | quote }}
+- name: ES_USER
+  value: {{ .Values.esUser | default "" | quote }}
+- name: ES_PASSWORD
+  value: {{ .Values.esPassword | default "" | quote }}
+- name: SMAUG_RPC_URL
+  value: {{ required "Plz set .Values.smaugRpcUrl" .Values.smaugRpcUrl | quote }}
+- name: PANAMERA_RPC_URL
+  value: {{ required "Plz set .Values.panameraRpcUrl" .Values.panameraRpcUrl | quote }}
+- name: TARGA_RPC_URL
+  value: {{ required "Plz set .Values.targaRpcUrl" .Values.targaRpcUrl | quote }}
+- name: OTC_RPC_URL
+  value: {{ required "Plz set .Values.otcRpcUrl" .Values.otcRpcUrl | quote }}
+- name: COFFER_RPC_URL
+  value: {{ required "Plz set .Values.cofferRpcUrl" .Values.cofferRpcUrl | quote }}
+- name: MARGIN_RPC_URL
+  value: {{ required "Plz set .Values.marginRpcUrl" .Values.marginRpcUrl | quote }}
+- name: COUNTER_GO_SERVER_URL
+  value: {{ required "Plz set .Values.counterGoServerUrl" .Values.counterGoServerUrl | quote }}
+- name: COUNTER_RPC_URL
+  value: {{ required "Plz set .Values.counterRpcUrl" .Values.counterRpcUrl | quote }}
+- name: PREZZO_SERVER_URL
+  value: {{ required "Plz set .Values.prezzoServerUrl" .Values.prezzoServerUrl | quote }}
+- name: CONFKEEPER_SERVER_URL
+  value: {{ required "Plz set .Values.confKeeperServerUrl" .Values.confKeeperServerUrl | quote }}
+- name: CONTRACT_RPC_URL
+  value: {{ required "Plz set .Values.contractRpcUrl" .Values.contractRpcUrl | quote }}
+- name: VIPER_RPC_URL
+  value: {{ required "Plz set .Values.viperRpcUrl" .Values.viperRpcUrl | quote }}
+- name: REBOOT_TIME
+  value: {{ required "Plz set .Values.rebootAt" .Values.rebootAt | default "2021-05-08 23:00:00" | quote }}
+- name: ES_ACCOUNTING_USE_MONTHLY_INDICES
+  value: {{ required "Plz set .Values.esAccountingUseMonthlyIndices" .Values.esAccountingUseMonthlyIndices | default "true" | quote }}
+- name: ES_ACCOUNTING_MONTHLY_INDICES_PREFIX
+  value: {{ required "Plz set .Values.esAccountingMonthlyIndicesPrefix" .Values.esAccountingMonthlyIndicesPrefix | default "app-events-account-histories" | quote }}
+- name: ES_ACCOUNTING_QUERY_DELAY_MINUTES
+  value: {{ required "Plz set .Values.esAccountingQueryDelayMinutes" .Values.esAccountingQueryDelayMinutes | default "60" | quote }}
+- name: REDIS_HOST
+  value: {{ .Release.Name }}-realm-shared-redis-master.{{ .Release.Namespace }}
+- name: REDIS_PORT
+  value: {{ default "6379" .Values.port | quote }}
+- name: REDIS_PASSWORD
+  valueFrom:
+    secretKeyRef:
+      name: realm-shared-redis-secret
+      key: redis-password
+- name: REDIS_DB_INDEX
+  value: {{ default "0" .Values.dbIndex | quote }}
+- name: GOOGLE_APPLICATION_CREDENTIALS
+  value: {{ required "Plz set .Values.googleApplicationCredetials" .Values.googleApplicationCredetials | default "/var/gcp/key.json" | quote }}
+- name: GCP_DATA_PROJECT_ID
+  value: {{ required "Plz set .Values.gcpDataProjectId" .Values.gcpDataProjectId | quote }}
+- name: GCP_PROJECT_ID
+  value: {{ required "Plz set .Values.gcpProjectId" .Values.gcpProjectId | quote }}
+- name: COUNTER_SUBSCRIPTION_NAME
+  value: {{ required "Plz set .Values.counterSubscriptionName" .Values.counterSubscriptionName | quote }}
+- name: REALM_APPLICATION_TOPIC_NAME
+  value: {{ required "Plz set .Values.REALM_APPLICATIONTopicName" .Values.REALM_APPLICATIONTopicName | quote }}
+- name: OTC_QUOTA_SUBSCRIPTION_NAME
+  value: {{ required "Plz set .Values.otcQuotaSubscriptionName" .Values.otcQuotaSubscriptionName }}
+- name: COUNTER_COMPLETED_DEPOSIT_SUBSCRIPTION_NAME
+  value: {{ required "Plz set .Values.counterCompletedDepositSubscriptionName" .Values.counterCompletedDepositSubscriptionName | quote }}
+- name: COUNTER_FAILED_WITHDRAWAL_SUBSCRIPTION_NAME
+  value: {{ required "Plz set .Values.counterFailedWithdrawalSubscriptionName" .Values.counterFailedWithdrawalSubscriptionName | quote }}
+- name: COUNTER_COMPLETED_WITHDRAWAL_SUBSCRIPTION_NAME
+  value: {{ required "Plz set .Values.counterCompletedWithdrawalSubscriptionName" .Values.counterCompletedWithdrawalSubscriptionName | quote }}
+- name: TARGA_REVIEW_RESULT_SUBSCRIPTION_NAME
+  value: {{ required "Plz set .Values.targaReviewResultSubscriptionName" .Values.targaReviewResultSubscriptionName | quote }}
+- name: MARGIN_SET_CUSTOMER_RISK_STATE_SUBSCRIPTION_NAME
+  value: {{ required "Plz set .Values.marginSetCustomerRiskStateSubscriptionName" .Values.marginSetCustomerRiskStateSubscriptionName | quote }}
+- name: COFFER_SET_CUSTOMER_RISK_STATE_SUBSCRIPTION_NAME
+  value: {{ required "Plz set .Values.cofferSetCustomerRiskStateSubscriptionName" .Values.cofferSetCustomerRiskStateSubscriptionName | quote }}
+- name: CUSTOMER_ACTIVITIES_SUBSCRIPTION_NAME
+  value: {{ required "Plz set .Values.customerActivitiesSubscriptionName" .Values.customerActivitiesSubscriptionName | quote }}
+- name: TRADE_SUB_NAME
+  value: {{ required "Plz set .Values.tradeSubName" .Values.tradeSubName | quote }}
+- name: CONTRACT_TRADE_SUB_NAME
+  value: {{ required "Plz set .Values.contractTradeSubName" .Values.contractTradeSubName | quote }}
+- name: CUSTOMER_PROFILE_REQUEST_SUBSCRIPTION_NAME
+  value: {{ required "Plz set .Values.customerProfileRequestSubscripionName" .Values.customerProfileRequestSubscripionName | quote }}
+- name: ENABLE_SPOT2_ACCOUNTS
+  value: {{ required "Plz set .Values.enableSpot2Accounts" .Values.enableSpot2Accounts | default "true" | quote }}
+- name: WITHDRAWAL_REVIEW_SERVICE_TYPE
+  value: {{ required "Plz set .Values.withDrawalReviewServiceType" .Values.withDrawalReviewServiceType | quote }}
+- name: KAFKA_URLS
+  value: {{ required "Plz set .Values.kafkaUrls" .Values.kafkaUrls | quote }}
+- name: KAFKA_TOPIC_TRANSFER
+  value: {{ required "Plz set .Values.kafkaTopicTransfer" .Values.kafkaTopicTransfer | quote }}
+- name: AML_ENABLE_PULL_ADDRESS
+  value: {{ required "Plz set .Values.amlEnablePullAddress" .Values.amlEnablePullAddress | default "true" | quote }}
+- name: AML_API_URL
+  value: {{ required "Plz set .Values.amlApiUrl" .Values.amlApiUrl | quote }}
+- name: AML_API_TOKEN
+  value: {{ required "Plz set .Values.amlApiToken" .Values.amlApiToken | quote }}
+- name: AML_INIT_START_DAY
+  value: {{ required "Plz set .Values.amlInitStartDay" .Values.amlInitStartDay | default "2017-05-16" | quote }}
+- name: CONTRACT_BONUS_ALERTING_LIMIT
+  value: {{ required "Plz set .Values.contractBonusAlertingLimit" .Values.contractBonusAlertingLimit | default "2" | quote }}
+- name: SERVICE_NAME
+  value: {{ required "Plz set .Values.serviceName" .Values.serviceName | default "MainREALM_APPLICATION" | quote }}
+- name: LOG_LEVEL
+  value: {{ required "Plz set .Values.logLevel" .Values.logLevel | default "info" | quote }}
+- name: NEWRELIC_LICENSE_KEY
+  value: {{ required "Plz set .Values.newrelicLicenseKey" .Values.newrelicLicenseKey | quote }}
+- name: NEWRELIC_ENABLED
+  value: {{ required "Plz set .Values.newrelicEnabled" .Values.newrelicEnabled | default "false" | quote }}
+- name: ETF_NET_VALUE_URL_BASE
+  value: {{ required "Plz set .Values.etfNetValueUrlBase" .Values.etfNetValueUrlBase | quote }}
+- name: DAILY_WITHDRAWAL_QUOTA
+  value: {{ required "Plz set .Values.dailyWithDrawalQuota" .Values.dailyWithDrawalQuota | quote }}
+- name: BYPASS_INSPECTION
+  value: {{ required "Plz set .Values.byPassInspection" .Values.byPassInspection | quote }}
+- name: RISK_CHECK_ENABLED
+  value: {{ required "Plz set .Values.riskCheckEnabled" .Values.riskCheckEnabled | quote }}
+- name: REALM_APPLICATION_DEVELOPER_ALERTING_DINGDING_TOKEN
+  value: {{ required "Plz set .Values.REALM_APPLICATIONDeveloperAlertingDingDingToken" .Values.REALM_APPLICATIONDeveloperAlertingDingDingToken | quote }}
+- name: TRADE_ALERTING_DINGDING_TOKEN
+  value: {{ required "Plz set .Values.tradeAlertingDingDingToken" .Values.tradeAlertingDingDingToken | quote }}
+- name: NOTIFY_MIN_AMOUNT
+  value: {{ required "Plz set .Values.notifyMinAmount" .Values.notifyMinAmount | quote }}
+- name: IS_OPEN_WITHDRAWAL_QUOTA
+  value: {{ required "Plz set .Values.isOpenWithdrawalQuota" .Values.isOpenWithdrawalQuota | quote }}
+- name: USDT_ASSET_UUID
+  value: {{ required "Plz set .Values.usdtAssetUUID" .Values.usdtAssetUUID | quote }}
+- name: INIT_NET_ASSETS_CUSTOMER_ID
+  value: {{ required "Plz set .Values.initNetAssetsCustomerID" .Values.initNetAssetsCustomerID | quote }}
+- name: CONSUMER_GROUP_ID
+  value: {{ required "Plz set .Values.consumerGroupID" .Values.consumerGroupID | quote }}
+- name: DINGDING_AT_MOBILES
+  value: {{ required "Plz set .Values.DingDingMobile" .Values.DingDingMobile | default " " | quote }}
+  # TODO: check datadog
+- name: DATA_DOG_ENABLED
+  value: {{ required "Plz set .Values.dataDogEnabled" .Values.dataDogEnabled | default "true" | quote }}
+# Lark
+- name: LARK_ALERTING_URL
+  value: {{ required "Plz set .Values.larkAlertingURL" .Values.larkAlertingURL | quote }}
+- name: LARK_DEVELOPER_ALERTING_TOKEN
+  value: {{ required "Plz set .Values.larkDeveloperAlertingToken" .Values.larkDeveloperAlertingToken | quote }}
+- name: LARK_ALERTING_TOKEN
+  value: {{ required "Plz set .Values.larkAlertingToken" .Values.larkAlertingToken | quote }}
+- name: LARK_REVIEW_ALERTING_TOKEN
+  value: {{ required "Plz set .Values.larkReviewAlertingToken" .Values.larkReviewAlertingToken | quote }}
+- name: LARK_DEPOSIT_ALERTING_TOKEN
+  value: {{ required "Plz set .Values.larkDepositAlertingToken" .Values.larkDepositAlertingToken | quote }}
+- name: LARK_TRADE_ALERTING_TOKEN
+  value: {{ required "Plz set .Values.larkTradeAlertingToken" .Values.larkTradeAlertingToken | quote }}
+- name: LARK_CONTRACT_TOKEN
+  value: {{ required "Plz set .Values.larkContractToken" .Values.larkContractToken | quote }}
+- name: AT_REALM_APPLICATION_USER_IDS
+  value: {{ required "Plz set .Values.atREALM_APPLICATIONUserIDs" .Values.atREALM_APPLICATIONUserIDs | quote }}
+{{- end }}

@@ -1,0 +1,140 @@
+dataDog: &dataDog
+  enabled: "true"
+  env: "prod"
+
+REALM_APPLICATION:
+  enabled: true
+  defaultReplicaCount: 1
+  rpcReplicaCount: 1
+  image:
+    repository: gcr.io/peatio-images-project/github.com/peatio/butterfly
+    tag: v5.5.0
+  resources:
+    requests:
+      cpu: 1
+      memory: 1Gi
+    limits:
+      cpu: 1
+      memory: 1Gi
+  service:
+    type: ClusterIP
+    port: &REALM_APPLICATIONGrpcport 50051
+  database:
+    host: "cia-REALM_APPLICATION-w-db.mysql.bigone."
+    user: "REALM_APPLICATION"
+    port: "3306"
+    name: "peatio-REALM_APPLICATION"
+  replicadatabase:
+    host: "cia-REALM_APPLICATION-r-db.mysql.bigone."
+    user: "REALM_APPLICATION"
+    port: "3306"
+    name: "pxn-migration"
+  dataDog:
+    <<: *dataDog
+    service: "REALM_APPLICATION"
+  dataDogEnabled: "true"
+  # cron
+  cronCheckAccounting: "*/2 * * * *"
+  bigqueryCredentialJson: "/var/gcp/REALM_APPLICATION-bigquery-sa.json"
+  # DingDing
+  dingdingToken: "dc5130de9d94c377b3055fb63958fe638ea64d265935c68c08b766cf6c5e0e41"
+  REALM_APPLICATIONAlertingDingDingToken: "9e36e09a2c176ca19e908ad59aca7a045d6d441448823575a90dcaedc3f028da"
+  depositAlertingDingDingToken: "d1ba716b6dd80746ca967492cb46e69dcd24fc3b34aa6f713a4be9e6b5b029e1"
+  contractDingDingToken: "2c10ce01684832a7dc3c609c06bd13124cb666b6b0d618ec34c97faa276d42ad"
+  contractDingDingMobile: "13141359512,13718770324"
+  # URL
+  panameraRpcUrl: "realm-uc-panamera-grpc.public.svc.cluster.local:50051"
+  targaRpcUrl: "targa-rpc.default.svc.cluster.local:50051"
+  otcRpcUrl: "bigotc-rpc.default.svc.cluster.local:50051"
+  cofferRpcUrl: "coffer-rpc.default.svc.cluster.local:50051"
+  marginRpcUrl: "margin-rpc.default.svc.cluster.local:50051"
+  counterGoServerUrl: "counter-go.default.svc.cluster.local:50051"
+  counterRpcUrl: "counter.default.svc.cluster.local:50051"
+  prezzoServerUrl: "prezzo-go-rpc.default.svc.cluster.local:50051"
+  confKeeperServerUrl: "confkeeper.default.svc.cluster.local:8666"
+  contractRpcUrl: "contract-grpc-external.public.svc.cluster.local:50051"
+  viperRpcUrl: "realm-uc-viper-grpc.uc.svc.cluster.local:50051"
+  # Setting
+  errorWhenNAccountValuationError: "3"
+  rebootAt: "2021-06-03 23:00:00"
+  serviceName: "REALM_APPLICATION"
+  logLevel: "info"
+  newrelicLicenseKey: "392c5f1b952809ba37c88db80dc7d2cdf1f531f1"
+  newrelicEnabled: "false"
+  # ES
+  esAccountingUseMonthlyIndices: "true"
+  esAccountingMonthlyIndicesPrefix: "app-events-account-histories"
+  esAccountingQueryDelayMinutes: "60"
+  esHost: "elasticsearch-master.default.svc.cluster.local"
+  esPort: "9200"
+  esUser: ""
+  esPassword: ""
+  smaugRpcUrl: "smaug-rpc.default.svc.cluster.local:50051"
+  # Redis
+  redisPort: "6379"
+  dbIndex: "0"
+  googleApplicationCredetials: "/var/gcp/key.json"
+  gcpDataProjectId: "pxn-peatio-data-project"
+  gcpProjectId: "pxn-peatio-project"
+  # Pub/Sub
+  counterSubscriptionName: "butterfly-counter-locked-withdrawal"
+  REALM_APPLICATIONTopicName: "REALM_APPLICATION-withdrawal-inspection-result"
+  otcQuotaSubscriptionName: "otc-quota-REALM_APPLICATION"
+  counterCompletedDepositSubscriptionName: "REALM_APPLICATION-counter-completed-deposits"
+  counterFailedWithdrawalSubscriptionName: "butterfly-counter-failed-withdrawal"
+  counterCompletedWithdrawalSubscriptionName: "butterfly-counter-completed-withdrawal"
+  targaReviewResultSubscriptionName: "REALM_APPLICATION-listen-targa-review-results"
+  marginSetCustomerRiskStateSubscriptionName: "REALM_APPLICATION-listen-margin-set-customer-risk-state"
+  cofferSetCustomerRiskStateSubscriptionName: "REALM_APPLICATION-listen-coffer-set-customer-risk-state"
+  customerActivitiesSubscriptionName: "REALM_APPLICATION-listen-customer-activities"
+  tradeSubName: "REALM_APPLICATION-listen-spotv2-trades"
+  contractTradeSubName: "REALM_APPLICATION-listen-contract-trades"
+  customerProfileRequestSubscripionName: "REALM_APPLICATION-listen-uc-customer-profile-request"
+  enableSpot2Accounts: "true"
+  withDrawalReviewServiceType: "withdrawal_review"
+  # AML
+  amlEnablePullAddress: "true"
+  amlApiUrl: "https://aml.slowmist.com/api/query"
+  amlApiToken: "dbd64e45af5bf24fd51f365758486c1b3dd284e3fb7abe9eb358694ca8c90b11"
+  amlInitStartDay: "2017-05-15"
+  contractBonusAlertingLimit: "2"
+  maxAreIDToAutoCheck: "633"
+  minAccountSnapshotIDToClear: "202203"
+  maxAccountSnapshotIDToClear: "202600"
+  cronAddOnceJob: "40 12 29 1 *"
+  kafkaUrls: "tokyo-insecure-kafka-cluster-node1:9092,tokyo-insecure-kafka-cluster-node2:9092,tokyo-insecure-kafka-cluster-node3:9092"
+  kafkaTopicTransfer: "transfer_event"
+  cronSyncMarketsDaily: "0 11 * * *"
+  cronCalculateCustomerNetAssetsAndUpdate: "*/30 * * * *"
+  cronSyncEtfNetValues: "*/10 * * * *"
+  etfNetValueUrlBase: "https://www.big.one/api/xn/v1"
+  dailyWithDrawalQuota: "30000000"
+  byPassInspection: "true"
+  riskCheckEnabled: "true"
+  REALM_APPLICATIONDeveloperAlertingDingDingToken: "871eb8edffb3fc0cc2576d447884661882934eba33656b49ef709c596981f1cd"
+  tradeAlertingDingDingToken: "6d95af01de1bcf26ec272338c9dfa8ceae3707ead65fce7ae04aaf77039afa1b"
+  notifyMinAmount: "3"
+  isOpenWithdrawalQuota: "false"
+  usdtAssetUUID: "17082d1c-0195-4fb6-8779-2cdbcb9eeb3c"
+  initNetAssetsCustomerID: "1018016"
+  consumerGroupID: "REALM_APPLICATION-reader"
+  DingDingMobile: "13718770324,18570666314"
+  # Lark
+  larkAlertingURL: "https://open.larksuite.com/open-apis/bot/v2/hook/"
+  larkDeveloperAlertingToken: "4f146d20-4a6f-4cc4-b825-b9bc5c44ab70"
+  larkAlertingToken: "6e34ed32-9a4f-4e64-b36b-cea3dfd99a13"
+  larkReviewAlertingToken: "8c6acbfa-0004-45ae-882c-1d7b9c7368a1"
+  larkDepositAlertingToken: "a343319c-4237-4db9-a1c8-e8097300fcd8"
+  larkTradeAlertingToken: "84f1c320-0790-46d9-98f0-34215033c6fe"
+  larkContractToken: "9fc2c1f5-f22d-47b5-b953-7d1957de36fe"
+  # @曹瑞建 @文圆承
+  atREALM_APPLICATIONUserIDs: "ou_dd6e9b279f7ad281c209a0b778bac649,ou_63dcd2fe9a8536048f55045bcea2b36b"
+
+ambassador:
+  enabled: true
+  services:
+  - name: "REALM_APPLICATION-grpc"
+    port: *REALM_APPLICATIONGrpcport
+    targetPort: *REALM_APPLICATIONGrpcport
+    externalName: "REALM_RELEASE-REALM_APPLICATION"
+

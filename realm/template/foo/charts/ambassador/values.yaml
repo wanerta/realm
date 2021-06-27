@@ -1,0 +1,3 @@
+services:
+  - name: "REALM_APPLICATION-grpc"
+    externalName: "REALM_RELEASE-REALM_APPLICATION"

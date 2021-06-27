@@ -1,0 +1,34 @@
+steps:
+- id: decrypted
+  name: 'gcr.io/peatio-images-project/github.com/scambio/sops:v3.5.0'
+  entrypoint: bash
+  args:
+  - -c
+  - |
+   find . -name enc.$BRANCH_NAME.values.yaml | while read e
+     do
+       echo "sops -d $e > $(echo $e | sed 's/enc\.'"$BRANCH_NAME"'\.//')"
+       sops -d $e > $(echo $e | sed 's/enc\.'"$BRANCH_NAME"'\.//')
+     done
+   find . -name enc.$BRANCH_NAME.config.yaml | while read e
+     do
+       echo "sops -d $e > $(echo $e | sed 's/enc\.'"$BRANCH_NAME"'\.//')"
+       sops -d $e > $(echo $e | sed 's/enc\.'"$BRANCH_NAME"'\.//')
+     done
+- name: 'gcr.io/peatio-images-project/github.com/peatio/veda/tools/helm:3.2.0'
+  args:
+  - upgrade
+  - --install
+  - REALM_RELEASE
+  - --namespace
+  - REALM_NAMESPACE
+  - .
+  - --values
+  - $BRANCH_NAME.yaml
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=asia-northeast1-a'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=bigone-tokyo-cluster'
+  - 'GCLOUD_PROJECT=pxn-peatio-project'
+  waitFor: ['decrypted']
+
+logsBucket: gs://cloud-build.logs.deq.peatio.com/production

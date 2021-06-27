@@ -1,0 +1,18 @@
+{{- range .Values.services }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "ambassador.serviceName" .name }}
+  labels:
+    {{- include "ambassador.labels" $ | nindent 4 }}
+  namespace: public
+spec:
+  ports:
+    - name: 
+      protocol: TCP
+      port: {{ .port }}
+      targetPort: {{ .targetPort }}
+  type: ExternalName
+  externalName: {{ .externalName }}.{{ $.Release.Namespace }}.svc.cluster.local
+{{- end }}

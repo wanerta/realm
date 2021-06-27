@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "REALM_APPLICATION-rpc.fullname" . }}
+  labels:
+    {{- include "REALM_APPLICATION.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.rpcReplicaCount }}
+  selector:
+    matchLabels:
+      {{- include "REALM_APPLICATION.rpcSelectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+    {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "REALM_APPLICATION.rpcSelectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "REALM_APPLICATION.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      volumes:
+        - name: key
+          secret:
+            secretName: REALM_APPLICATION
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["bin/REALM_APPLICATION"]
+          volumeMounts:
+            - name: key
+              mountPath: /var/gcp
+          ports:
+            - name: grpc
+              containerPort: {{ .Values.service.port }}
+          env:
+            - name: APP_ENTRY
+              value: "rpc"
+            - name: APP_ENV
+              value: "production"
+            {{- include "REALM_APPLICATION.env-common" . | indent 12 }}
+            {{- include "datadog.env" . | indent 12 }}
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}

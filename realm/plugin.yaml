@@ -1,0 +1,16 @@
+name: "realm"
+version: "0.1.0"
+usage: "realm project scaffold"
+description: "realm project scaffold"
+ignoreFlags: false
+command: "$HELM_PLUGIN_DIR/realm.sh"
+platformCommand:
+  - os: linux
+    arch: i386
+    command: "$HELM_PLUGIN_DIR/realm.sh"
+  - os: linux
+    arch: amd64
+    command: "$HELM_PLUGIN_DIR/realm.sh"
+  - os: windows
+    arch: amd64
+    command: "$HELM_PLUGIN_DIR/realm.sh"
