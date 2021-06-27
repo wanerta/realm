@@ -6,6 +6,7 @@ trap cleanup SIGINT SIGTERM ERR EXIT
 RElEASE=""
 NAMESPACE=""
 APPLICATION=""
+WORKSPACE=$PWD
 
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 
@@ -105,4 +106,4 @@ find  /tmp/$RElEASE -type f -name "*.yaml" | while read e
         sed  -i "" -e "s/REALM_APPLICATION/$APPLICATION/" $e
         sed  -i "" -e "s/REALM_NAMESPACE/$NAMESPACE/" $e
      done
-mv /tmp/$RElEASE /Users/tianhao/Downloads/
+mv /tmp/$RElEASE $WORKSPACE
